@@ -28,4 +28,4 @@ jobs:
         
         with:
           release_id: ${{ steps.create_release.outputs.id }}
-          GITHUB_TOKEN: ${{ secrets.actions }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
