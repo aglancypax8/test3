@@ -1,0 +1,13 @@
+on:
+  release:
+    types: [published]
+  
+jobs:
+  release-on-push:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - name: Trigger echo
+        run: echo "A new release has been published."
