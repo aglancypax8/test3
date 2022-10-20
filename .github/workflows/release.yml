@@ -8,7 +8,7 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.actions }} # This token is provided by Actions, you do not need to create your own token
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
