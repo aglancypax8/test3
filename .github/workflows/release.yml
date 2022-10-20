@@ -21,12 +21,7 @@ jobs:
           draft: true
           prerelease: false
           
-  Publish:
-   # needs: Release
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
+  
       
       - id: publish
         uses: eregon/publish-release@v1
