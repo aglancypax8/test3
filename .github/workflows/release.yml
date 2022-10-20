@@ -21,26 +21,16 @@ jobs:
           draft: true
           prerelease: false
           
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   Publish:
-    needs: Release
+   # needs: Release
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    
-      - id: fetch-latest-release
-        uses: thebritican/fetch-latest-release@v2.0.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+      
       - id: publish
         uses: eregon/publish-release@v1
         
         with:
-          release_id: ${{ steps.fetch-latest-release.outputs.id }}
+          release_id: ${{ steps.create_release.outputs.id }}
           GITHUB_TOKEN: ${{ secrets.actions }}
