@@ -5,6 +5,7 @@ on:
     # To update the schedule, navigate to https://crontab.guru/. Here you can easily set the parameters for when the schedule should run. 
     # This is currently set to run at 4:00am every Tuesday.
     - cron: '0 4 * * 2'
+  push:
 
 env:
     # If set to true. this will disable any new releases from being published.
