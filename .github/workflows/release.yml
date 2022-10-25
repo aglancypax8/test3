@@ -1,33 +1,37 @@
 name: Scheduled Release
 
 on:
-  push
+  schedule:
+    # To update the schedule, navigate to https://crontab.guru/. Here you can easily set the parameters for when the schedule should run. 
+    # This is currently set to run at 4:00am every Tuesday.
+    - cron: '0 4 * * 2'
+
+env:
+    # If set to true. this will disable any new releases from being published.
+    CHANGE_FREEZE: false
 
 jobs:
-  Release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: 9.9.0
-          release_name: 9.9.0
-          draft: true
-          prerelease: false
-          
   
-      
-      - id: publish
-        uses: eregon/publish-release@v1
-        
+  release-on-push:
+    runs-on: ubuntu-latest
+    
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - name: Change Freeze Implemented 
+        if: env.CHANGE_FREEZE != 'false'
+        run: echo "Scheduled Releases can only be published during approved maintenance windows."
+
+      - name: Increments Version
+        uses: rymndhng/release-on-push-action@master
+        if: env.CHANGE_FREEZE == 'false'
         with:
-          release_id: ${{ steps.create_release.outputs.id }}
-          GITHUB_TOKEN: ${{ secrets.actions  }}
+          # increments the patch version by 1. e.g. 1.0.0 > 1.0.1
+          bump_version_scheme: patch
+          use_github_release_notes: true
+
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+          echo "Got release version ${{ steps.release.outputs.version }}"
